@@ -1,0 +1,38 @@
+body {
+margin:0 1em;
+background-color: #000;
+}
+.output {
+  vertical-align: top;
+  display:inline-block;
+  color:#0f0;
+  /*background-color: #111;*/
+  font-family: "Courier New", monospace;
+  height:100%;
+  margin:2em 0 0 0;
+  padding:0;
+  border:0;
+}
+#game {
+  width:100%;
+  height:100%;
+  align-items: center;
+}
+#scr {
+  width:20%;
+  text-align: center;
+  margin-right: 5%;
+  height:100%;
+}
+#grid {
+    min-width:240px;
+    width:50%;
+text-align: center;
+letter-spacing: 0.5em;
+}
+#contr {
+    width:20%;
+    text-align: center;
+    margin-left:5%;
+
+}
