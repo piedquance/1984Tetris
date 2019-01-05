@@ -52,8 +52,6 @@ let lvl = document.querySelector("#lvl");
     grid.innerHTML = arrayToString(gameGrid);
   }, difficulty);   //end of interval
 }; //end of loop
-var y = 1;
-
 //key is pressed key
 document.addEventListener('keydown', (event) => {
   key = event.key;
