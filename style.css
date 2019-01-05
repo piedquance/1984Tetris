@@ -1,17 +1,21 @@
 body {
-margin:0 1em;
+margin:0 20em;
 background-color: #000;
 }
 .output {
   vertical-align: top;
   display:inline-block;
   color:#0f0;
-  /*background-color: #111;*/
+ /*background-color: #111;*/
   font-family: "Courier New", monospace;
   height:100%;
   margin:2em 0 0 0;
   padding:0;
   border:0;
+}
+#press {
+  letter-spacing: normal;
+  font-size: 15px;
 }
 #game {
   width:100%;
@@ -19,9 +23,8 @@ background-color: #000;
   align-items: center;
 }
 #scr {
-  width:20%;
-  text-align: center;
-  margin-right: 5%;
+  width:25%;
+  text-align: left;
   height:100%;
 }
 #grid {
@@ -32,7 +35,18 @@ letter-spacing: 0.5em;
 }
 #contr {
     width:20%;
-    text-align: center;
+    text-align: left;
     margin-left:5%;
-
+}
+@media screen and (max-width:1120px) {
+body {margin:0 15em}
+}
+@media screen and (max-width:960px) {
+body {margin:0 10em}
+}
+@media screen and (max-width:800px) {
+body {margin:0 5em}
+}
+@media screen and (max-width:640px) {
+body {margin:0}
 }
