@@ -43,7 +43,7 @@ let x = 0;
 function setup() {
 scr.innerHTML = "FULL LINES = <span id=\"lines\">0</span><br>LEVEL = <span id=\"lvl\">0</span><br>SCORE = <span id=\"score\">0</span><br>TIME = <span id=\"time\">0</span><br><br><span id=\"next\"></span>"
 grid.innerHTML = arrayToString(gameGrid);
-contr.innerHTML = "MOVE LEFT: a<br> MOVE RIGHT: b"
+contr.innerHTML = "MOVE LEFT: a<br> MOVE RIGHT: d"
 let timer = 0;
 let difficulty = 1000;
 let time = document.querySelector("#time");
