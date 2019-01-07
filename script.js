@@ -58,11 +58,6 @@ function rotateSquare(array) {
   for(let y = 0; y < array.length;y++) {
     copy.push([]);
     for(let x = 0; x < array.length;x++) {
-      copy[y].push("");
-    }
-  }
-  for(let y = 0; y < array.length;y++) {
-    for(let x = 0; x < array.length;x++) {
       copy[y][x] = array[array.length-1-x][y];
     }
   }
@@ -102,6 +97,10 @@ function display(grid, sprite, x, y) {
 function getRandomArbitrary(min, max) {
   return Math.floor(Math.random() * (max - min) + min);
 }
+
+function collision(grid, array, setting) {
+
+}
 //VARIABLE DECLARATION DEPOSIT
 let scr = document.querySelector("#scr");
 let grid = document.querySelector("#grid");
@@ -117,7 +116,7 @@ let y = 5;
 function setup() {
 scr.innerHTML = "FULL LINES = <span id=\"lines\">0</span><br>LEVEL = <span id=\"lvl\">0</span><br>SCORE = <span id=\"score\">0</span><br>TIME = <span id=\"time\">0</span><br><br><span id=\"next\"></span>"
 grid.innerHTML = arrayToString(gameGrid);
-contr.innerHTML = "ROTATE: ww"
+contr.innerHTML = "ROTATE: w"
 current = sprites[getRandomArbitrary(0, 7)]
 let timer = 0;
 let difficulty = 1000;
