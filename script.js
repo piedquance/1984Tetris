@@ -57,7 +57,8 @@ let O = [
 ["[]","[]"]
 ];
 // INDEPENDANT FUNCTION UNION
-function arrayToString(mapT) {let mapImage = "";for(let row = 0; row < mapT.length; row++) {for(let unit = 0; unit < mapT[row].length; unit++) {mapImage += mapT[row][unit];}mapImage += "\n";}return mapImage;};
+function arrayToString(mapT) {let mapImage = "";for(let row = 0; row < mapT.length; row++) {for(let unit = 0; unit < mapT[row].length; unit++) {mapImage += mapT[row][unit];}mapImage += "<br>";}return mapImage;};
+
 function rotateSquare(array) {
   let copy = [];
   for(let y = 0; y < array.length;y++) {
@@ -73,6 +74,8 @@ function rotateSquare(array) {
   }
   return copy;
 };
+
+
 //VARIABLE DECLARATION DEPOSIT
 let scr = document.querySelector("#scr");
 let grid = document.querySelector("#grid");
