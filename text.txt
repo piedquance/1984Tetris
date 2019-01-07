@@ -1,0 +1,16 @@
+1.Display a tetromino in the grid
+2.Move it to the right
+3.Put controls in place for moving right and left
+4.Have collision detection, it can't move if blocked by another []
+5.Put in controls for rotating it, with collision detection
+6.Move it down
+7.Put control in place for moving down
+8.Collision detection, can't fall down if blocked
+9.Make the falling down automatic and at every second
+10.Make it appear at the top at start
+11.When it cannot move anymore, spawn the same tetromino at the top
+12.Make it random
+13.Game finishes or restarts when top line is almost full
+14.Remove lines that are full, and increment the counter when that happens
+15.Have a scoring and level system
+16.Fix bugs
