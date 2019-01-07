@@ -27,8 +27,24 @@ let S = [
 [" ."," .","[]"," ."],
 [" ."," ."," ."," ."]
 ];
+
 // INDEPENDANT FUNCTION UNION
-function arrayToString(mapT) {let mapImage = "";for(let row = 0; row < mapT.length; row++) {for(let unit = 0; unit < mapT[row].length; unit++) {mapImage += mapT[row][unit];}mapImage += "<br>";}return mapImage;};
+function arrayToString(mapT) {let mapImage = "";for(let row = 0; row < mapT.length; row++) {for(let unit = 0; unit < mapT[row].length; unit++) {mapImage += mapT[row][unit];}mapImage += "\n";}return mapImage;};
+function rotateSquare(array) {
+  let copy = [];
+  for(let y = 0; y < array.length;y++) {
+    copy.push([]);
+    for(let x = 0; x < array.length;x++) {
+      copy[y].push("");
+    }
+  }
+  for(let y = 0; y < array.length;y++) {
+    for(let x = 0; x < array.length;x++) {
+      copy[y][x] = array[array.length-1-x][y];
+    }
+  }
+  return copy;
+};
 //VARIABLE DECLARATION DEPOSIT
 let scr = document.querySelector("#scr");
 let grid = document.querySelector("#grid");
