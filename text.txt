@@ -1,5 +1,5 @@
-1.Display a tetromino in the grid
-2.Move it to the right
+//1.Display a tetromino in the grid
+//2.Move it to the right
 3.Put controls in place for moving right and left
 4.Have collision detection, it can't move if blocked by another []
 5.Put in controls for rotating it, with collision detection
