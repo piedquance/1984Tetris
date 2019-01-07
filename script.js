@@ -22,35 +22,35 @@ let gameGrid = [["&lt!"," ."," ."," ."," ."," ."," ."," ."," ."," .", " .","!>"]
   ["&lt!","==","==","==","==","==","==","==","==","==","==","!>",],
 ["\\/\\/\\/\\/\\/\\/\\/\\/\\/\\/\\/"]];
 let S = [
-[" .","[]"," ."],
-[" .","[]","[]"],
-[" ."," .","[]"],
+["","[]",""],
+["","[]","[]"],
+["","","[]"],
 ];
 let Z = [
-[" ."," .","[]"],
-[" .","[]","[]"],
-[" .","[]"," ."]
+["","","[]"],
+["","[]","[]"],
+["","[]",""]
 ];
 let T = [
-[" .","[]"," ."],
-[" .","[]","[]"],
-[" .","[]"," ."]
+["","[]",""],
+["","[]","[]"],
+["","[]",""]
 ];
 let L = [
-[" .","[]"," ."],
-[" .","[]"," ."],
-[" .","[]","[]"]
+["","[]",""],
+["","[]",""],
+["","[]","[]"]
 ];
 let J = [
-[" .","[]","[]"],
-[" .","[]"," ."],
-[" .","[]"," ."]
+["","[]","[]"],
+["","[]",""],
+["","[]",""]
 ];
 let I = [
-[" .","[]"," ."," ."],
-[" .","[]"," ."," ."],
-[" .","[]"," ."," ."],
-[" .","[]"," ."," ."]
+["","[]","",""],
+["","[]","",""],
+["","[]","",""],
+["","[]","",""]
 ];
 let O = [
 ["[]","[]"],
@@ -75,6 +75,35 @@ function rotateSquare(array) {
   return copy;
 };
 
+function farthest(array, direction) {
+  let z = 0;
+  if(direction === "x")  {
+    for(let y = 0; y < array.length;y++) {
+      for(let x = 0; x < array.length;x++) {
+        z = array[y][x]==="[]" ? x:z;
+      }
+    } return z;
+  } else if(direction === "y"){
+    for(let y = 0; y < array.length;y++) {
+       z = array[y].includes("[]") ? y:z;
+    } return z;
+  }
+
+};
+
+function display(grid, sprite, x, y) {
+  if(grid[y][x + farthest(sprite, "x")] && grid[y + farthest(sprite, "y")][x]) {
+    for(let y1 = 0; y1 < sprite.length;y1++) {
+      for(let x1 = 0; x1 < sprite.length;x1++) {
+        if(sprite[y1][x1]) {
+          grid[y+y1][x+x1] = sprite[y1][x1];
+        }
+     }
+   }
+   return grid;
+  }
+  else return grid;
+};
 
 //VARIABLE DECLARATION DEPOSIT
 let scr = document.querySelector("#scr");
@@ -84,7 +113,6 @@ let game = document.querySelector("#game");
 let once = true;
 let key;
 let current;
-let x = 0;
 
 //#####SETUP#####
 function setup() {
@@ -99,17 +127,16 @@ let next = document.querySelector("#next");
   setInterval(() => {
     timer++;time.innerHTML = timer+ "s";
   }, difficulty);
-  x = 3;
 };
 
 //#####DRAW#####
 function draw() {
   current = S;
+  console.log(current);
+
+ gameGrid = display(gameGrid, current, 5, 5);
 
 
-
-
-  console.log(x);
   next.innerHTML = arrayToString(current);
   grid.innerHTML = arrayToString(gameGrid);
 }
