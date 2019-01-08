@@ -98,8 +98,18 @@ function getRandomArbitrary(min, max) {
   return Math.floor(Math.random() * (max - min) + min);
 }
 
-function collision(grid, array, setting) {
+function collision(grid, array, x, y, setting) {
+  switch(setting) {
+    case "a" :
 
+    break;
+    case "d" :
+    break;
+    case "w" :
+    break;
+    case "s"
+    break;
+  }
 }
 //VARIABLE DECLARATION DEPOSIT
 let scr = document.querySelector("#scr");
@@ -137,9 +147,8 @@ function draw() {
       gamePlay[y].push(gameGrid[y][x]);
     }
   }
-
  switch(key) {
-  /* case "a":
+/*   case "a":
    if(x !== 0) x--;
    gamePlay = display(gamePlay, current, x, y);
     break;
@@ -152,7 +161,7 @@ function draw() {
    gamePlay = display(gamePlay, current, x, y);
    break;
 /*   case "s" :
-   if(y !== 17)y++;
+   if(y !== 19)y++;
    gamePlay = display(gamePlay, current, x, y);
    break;*/
    default :
