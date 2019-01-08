@@ -71,7 +71,6 @@ function display(grid, sprite, x, y) {
       newGrid[y][x] = grid[y][x];
     }
   }
-//  if(newGrid[y][x + farthest(sprite, "x")] && newGrid[y + farthest(sprite, "y")][x]) {
     for(let y1 = 0; y1 < sprite.length;y1++) {
       for(let x1 = 0; x1 < sprite.length;x1++) {
         if(sprite[y1][x1]) {
@@ -80,8 +79,6 @@ function display(grid, sprite, x, y) {
      }
    }
    return newGrid;
-//  }
-//  else return grid;
 };
 
 function getRandomArbitrary(min, max) {
