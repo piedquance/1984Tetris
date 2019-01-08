@@ -69,7 +69,7 @@ function farthest(array, direction) {
   if(direction === "x")  {
     for(let y = 0; y < array.length;y++) {
       for(let x = 0; x < array.length;x++) {
-        z = array[y][x]==="[]" ? x:z;
+          z = array[y][x]==="[]" && x>z ? x:z;
       }
     } return z;
   } else if(direction === "y"){
@@ -107,7 +107,7 @@ function collision(grid, array, x, y, setting) {
     break;
     case "w" :
     break;
-    case "s"
+    case "s" :
     break;
   }
 }
