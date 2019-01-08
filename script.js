@@ -63,53 +63,71 @@ function rotateSquare(array) {
   }
   return copy;
 };
-
-function farthest(array, direction) {
-  let z = 0;
-  if(direction === "x")  {
-    for(let y = 0; y < array.length;y++) {
-      for(let x = 0; x < array.length;x++) {
-        z = array[y][x]==="[]" ? x:z;
-      }
-    } return z;
-  } else if(direction === "y"){
-    for(let y = 0; y < array.length;y++) {
-       z = array[y].includes("[]") ? y:z;
-    } return z;
-  }
-
-};
-
 function display(grid, sprite, x, y) {
-  if(grid[y][x + farthest(sprite, "x")] && grid[y + farthest(sprite, "y")][x]) {
+  let newGrid = [];
+  for(let y = 0; y < grid.length;y++) {
+    newGrid.push([]);
+    for(let x = 0; x < grid[y].length;x++) {
+      newGrid[y][x] = grid[y][x];
+    }
+  }
+//  if(newGrid[y][x + farthest(sprite, "x")] && newGrid[y + farthest(sprite, "y")][x]) {
     for(let y1 = 0; y1 < sprite.length;y1++) {
       for(let x1 = 0; x1 < sprite.length;x1++) {
         if(sprite[y1][x1]) {
-          grid[y+y1][x+x1] = sprite[y1][x1];
+          newGrid[y+y1][x+x1] = sprite[y1][x1];
         }
      }
    }
-   return grid;
-  }
-  else return grid;
+   return newGrid;
+//  }
+//  else return grid;
 };
 
 function getRandomArbitrary(min, max) {
   return Math.floor(Math.random() * (max - min) + min);
 }
 
-function collision(grid, array, x, y, setting) {
+function collision(OGgrid, array, x, y, setting) {
+  let grid = display(OGgrid, array, x, y);
+  let ok = true;
   switch(setting) {
     case "a" :
-
+    for(let y1 = 0; y1 < array.length; y1++) {
+      let stop = true;
+      let x1 = -1;
+      while(stop) {
+          x1++;
+        if(array[y1][x1] === "[]") stop = false;
+      }
+      if(grid[y + y1][x - 1 + x1] === "[]" || grid[y + y1][x - 1 + x1] === "&lt!") ok = false;
+    }
     break;
     case "d" :
+    for(let y1 = 0; y1 < array.length; y1++) {
+    let x1 = 1;
+    for(let x2 = 0; x2<array[y1].length;x2++) {
+      if(array[y1][x2] === "[]" ) x1++;
+    }
+    if(grid[y + y1][x + x1] === "[]" || grid[y + y1][x +x1] === "!>") ok = false;
+  }
     break;
     case "w" :
+    let copy = display(OGgrid, rotateSquare(array), x, y);
+    let num1 = 0, num2 = 0;
+    for(let y1 = y;y1<y+array.length;y1++) {
+      for(let x1 = x; x1<x+array.length;x1++) {
+        if(copy[y1][x1] !== " .") num2++ ;
+        if(grid[y1][x1] !== " .") num1++ ;
+      }
+    }
+    console.log(num2, num1);
+    if(num1 !== num2) ok = false;
     break;
-    case "s"
+    case "s" :
     break;
   }
+  return ok;
 }
 //VARIABLE DECLARATION DEPOSIT
 let scr = document.querySelector("#scr");
@@ -148,16 +166,16 @@ function draw() {
     }
   }
  switch(key) {
-/*   case "a":
-   if(x !== 0) x--;
+   case "a":
+   if(collision(gamePlay, current, x, y, "a")) x--;
    gamePlay = display(gamePlay, current, x, y);
     break;
    case "d":
-   if(x !== 8) x++;
+   if(collision(gamePlay, current, x, y, "d")) x++;
    gamePlay = display(gamePlay, current, x, y);
-   break;*/
+   break;
    case "w" :
-   current = rotateSquare(current);
+   if(collision(gamePlay, current, x, y, "w")) current = rotateSquare(current);
    gamePlay = display(gamePlay, current, x, y);
    break;
 /*   case "s" :
