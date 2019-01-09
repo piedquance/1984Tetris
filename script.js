@@ -96,7 +96,10 @@ function collision(OGgrid, array, x, y, setting) {
       while(stop) {
           x1++;
         if(array[y1][x1] === "[]") stop = false;
-        if(x1+1 === array[y1].length) stop = false;
+        if(x1+1 === array[y1].length) {
+          stop = false;
+          x1 = NaN;
+        }
       }
       if(grid[y + y1][x - 1 + x1] === "[]" || grid[y + y1][x - 1 + x1] === "&lt!") ok = false;
     }
@@ -107,7 +110,8 @@ function collision(OGgrid, array, x, y, setting) {
     for(let x2 = 0; x2<array[y1].length;x2++) {
       if(array[y1][x2] === "[]" ) x1++;
     }
-    if(grid[y + y1][x + x1] === "[]" || grid[y + y1][x +x1] === "!>") ok = false;
+    if(grid[y + y1][x + x1] === "[]" || grid[y + y1][x +x1] === "!>")ok = false;
+    console.log("d",y1,x1,grid[y + y1][x + x1], ok);
   }
     break;
     case "w" :
@@ -119,7 +123,6 @@ function collision(OGgrid, array, x, y, setting) {
         if(grid[y1][x1] !== " .") num1++ ;
       }
     }
-    console.log(num2, num1);
     if(num1 !== num2) ok = false;
     break;
     case "s" :
