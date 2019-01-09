@@ -106,12 +106,12 @@ function collision(OGgrid, array, x, y, setting) {
     break;
     case "d" :
     for(let y1 = 0; y1 < array.length; y1++) {
-    let x1 = 1;
+    let x1 = 0;
     for(let x2 = 0; x2<array[y1].length;x2++) {
-      if(array[y1][x2] === "[]" ) x1++;
+      if(array[y1][x2] === "[]" ) x1 = x2+1;
     }
     if(grid[y + y1][x + x1] === "[]" || grid[y + y1][x +x1] === "!>")ok = false;
-    console.log("d",y1,x1,grid[y + y1][x + x1], ok);
+    console.log(y,x,"d",y1,x1,grid[y + y1][x + x1], ok);
   }
     break;
     case "w" :
@@ -145,7 +145,7 @@ let y = 5;
 function setup() {
 scr.innerHTML = "FULL LINES = <span id=\"lines\">0</span><br>LEVEL = <span id=\"lvl\">0</span><br>SCORE = <span id=\"score\">0</span><br>TIME = <span id=\"time\">0</span><br><br><span id=\"next\"></span>"
 grid.innerHTML = arrayToString(gameGrid);
-contr.innerHTML = "ROTATE: w<br>MOVE RIGHT: a"
+contr.innerHTML = "ROTATE: w<br>MOVE LEFT: a<br>MOVE RIGHT: d"
 current = sprites[getRandomArbitrary(0, 7)]
 let timer = 0;
 let difficulty = 1000;
