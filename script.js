@@ -1,5 +1,7 @@
 //"sprites"
-let gameGrid = [["&lt!"," ."," ."," ."," ."," ."," ."," ."," ."," .", " .","!>"],
+let gameGrid = [[" "," "," "," "," "," "," "," "," "," "," "],
+[" "," "," "," "," "," "," "," "," "," "," "],
+  ["&lt!"," ."," ."," ."," ."," ."," ."," ."," ."," .", " .","!>"],
   ["&lt!"," ."," ."," ."," ."," ."," ."," ."," ."," .", " .","!>"],
   ["&lt!"," ."," ."," ."," ."," ."," ."," ."," ."," .", " .","!>"],
   ["&lt!"," ."," ."," ."," ."," ."," ."," ."," ."," .", " .","!>"],
@@ -22,35 +24,37 @@ let gameGrid = [["&lt!"," ."," ."," ."," ."," ."," ."," ."," ."," .", " .","!>"]
   ["&lt!","==","==","==","==","==","==","==","==","==","==","!>",],
 ["\\/\\/\\/\\/\\/\\/\\/\\/\\/\\/\\/"]];
 const sprites = [[
-["","[]",""],
 ["","[]","[]"],
+["[]","[]",""],
+["","",""],
+],[
+["[]","[]",""],
+["","[]","[]"],
+["","",""]
+],[
+["","[]",""],
+["[]","[]","[]"],
+["","",""]
+],[
 ["","","[]"],
+["[]","[]","[]"],
+["","",""]
 ],[
-["","","[]"],
-["","[]","[]"],
-["","[]",""]
+["[]","",""],
+["[]","[]","[]"],
+["","",""]
 ],[
-["","[]",""],
-["","[]","[]"],
-["","[]",""]
-],[
-["","[]",""],
-["","[]",""],
-["","[]","[]"]
-],[
-["","[]","[]"],
-["","[]",""],
-["","[]",""]
-],[
-["","[]","",""],
-["","[]","",""],
-["","[]","",""],
-["","[]","",""]
+["","","",""],
+["[]","[]","[]","[]"],
+["","","",""],
+["","","",""]
 ],[
 ["[]","[]"],
 ["[]","[]"]
 ]]
 // INDEPENDANT FUNCTION UNION
+function arrayToGrid(mapT) {let mapImage = "";for(let row = 2; row < mapT.length; row++) {for(let unit = 0; unit < mapT[row].length; unit++) {mapImage += mapT[row][unit];}mapImage += "<br>";}return mapImage;};
+
 function arrayToString(mapT) {let mapImage = "";for(let row = 0; row < mapT.length; row++) {for(let unit = 0; unit < mapT[row].length; unit++) {mapImage += mapT[row][unit];}mapImage += "<br>";}return mapImage;};
 
 function rotateSquare(array) {
@@ -125,8 +129,6 @@ function collision(OGgrid, array, x, y, setting) {
     }
     if(num1 !== num2) ok = false;
     break;
-    case "s" :
-    break;
   }
   return ok;
 }
@@ -139,7 +141,7 @@ let once = true;
 let key;
 let current;
 let x = 5;
-let y = 5;
+let y = 0;
 
 //#####SETUP#####
 function setup() {
@@ -179,10 +181,10 @@ function draw() {
    if(collision(gamePlay, current, x, y, "w")) current = rotateSquare(current);
    gamePlay = display(gamePlay, current, x, y);
    break;
-/*   case "s" :
-   if(y !== 19)y++;
+   case "s" :
+   if(y<19)y++;
    gamePlay = display(gamePlay, current, x, y);
-   break;*/
+   break;
    default :
    gamePlay = display(gamePlay, current, x, y);
    break;
@@ -192,7 +194,7 @@ function draw() {
 
 
   next.innerHTML = arrayToString(current);
-  grid.innerHTML = arrayToString(gamePlay);
+  grid.innerHTML = arrayToGrid(gamePlay);
 }
 //the thing that makes everything work
 document.addEventListener('keydown', (event) => {
