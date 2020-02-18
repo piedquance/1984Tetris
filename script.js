@@ -144,6 +144,11 @@ let x = 5;
 let y = 0;
 
 //#####SETUP#####
+function start() {
+  
+}
+
+
 function setup() {
 scr.innerHTML = "FULL LINES = <span id=\"lines\">0</span><br>LEVEL = <span id=\"lvl\">0</span><br>SCORE = <span id=\"score\">0</span><br>TIME = <span id=\"time\">0</span><br><br><span id=\"next\"></span>"
 grid.innerHTML = arrayToString(gameGrid);
@@ -197,12 +202,19 @@ function draw() {
   grid.innerHTML = arrayToGrid(gamePlay);
 }
 //the thing that makes everything work
+
+let inputStream = [];
+
 document.addEventListener('keydown', (event) => {
   key = event.key;
-  console.log(key);
+  inputStream.push(key);
+console.log(inputStream);
+  //
   if(key === " " && once) {
-    once = false;
-    setup();}
-
-  draw();
+    once = false; setup();
+    //start();
+  }
+ 
+    draw();
+  //
 });
