@@ -160,7 +160,8 @@ let next = document.querySelector("#next");
     timer++;time.innerHTML = timer+ "s";
   }, difficulty);
 
-
+  frames.push(gameGrid);
+  frames[1] = [];
     window.setInterval(() => {draw();}, 100);
 }
 
@@ -169,45 +170,52 @@ let next = document.querySelector("#next");
 //#####DRAW#####
 function draw() {
 
-  let gamePlay = [];
-  for(let y = 0; y < gameGrid.length;y++) {
-    gamePlay.push([]);
-    for(let x = 0; x < gameGrid[y].length;x++) {
-      gamePlay[y].push(gameGrid[y][x]);
+if(inputStream.length === 0) {return;}
+else {
+  for(let y = 0; y < frames[0].length;y++) {
+    frames[1].push([]);
+    for(let x = 0; x < frames[0][y].length;x++) {
+      frames[1][y].push(frames[0][y][x]);
     }
-  }
+  }}
+
+
   for(x in inputStream) {
-    switch(x) {
+    console.log("this is x    " + inputStream[x]);
+    switch(inputStream[x]) {
       case "a":
-      if(collision(gamePlay, current, x, y, "a")) x--;
-      gamePlay = display(gamePlay, current, x, y);
+      if(collision(frames[1], current, x, y, "a")) x--;
+      frames[1] = display(frames[1], current, x, y);
        break;
       case "d":
-      if(collision(gamePlay, current, x, y, "d")) x++;
-      gamePlay = display(gamePlay, current, x, y);
+      if(collision(frames[1], current, x, y, "d")) x++;
+      frames[1] = display(frames[1], current, x, y);
       break;
       case "w" :
-      if(collision(gamePlay, current, x, y, "w")) current = rotateSquare(current);
-      gamePlay = display(gamePlay, current, x, y);
+      if(collision(frames[1], current, x, y, "w")) current = rotateSquare(current);
+      frames[1] = display(frames[1], current, x, y);
       break;
       case "s" :
       if(y<19)y++;
-      gamePlay = display(gamePlay, current, x, y);
+      frames[1] = display(frames[1], current, x, y);
       break;
       default :
-      gamePlay = display(gamePlay, current, x, y);
+      frames[1] = display(frames[1], current, x, y);
       break;
     }
   }
  inputStream = [];
   console.log("draw")
 
- // next.innerHTML = arrayToString(current);
-  //grid.innerHTML = arrayToGrid(gamePlay);
+  next.innerHTML = arrayToString(current);
+  grid.innerHTML = arrayToGrid(frames[1]);
+  frames[1] = [];
+
 }
 //the thing that makes everything work
 
 let inputStream = [];
+let frames = [];
 
 document.addEventListener('keydown', (event) => {
   key = event.key;
