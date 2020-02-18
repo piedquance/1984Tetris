@@ -108,6 +108,7 @@ function collision(OGgrid, array, x, y, setting) {
       if(grid[y + y1][x - 1 + x1] === "[]" || grid[y + y1][x - 1 + x1] === "&lt!") ok = false;
     }
     break;
+	
     case "d" :
     for(let y1 = 0; y1 < array.length; y1++) {
     let x1 = 0;
@@ -118,6 +119,7 @@ function collision(OGgrid, array, x, y, setting) {
     console.log(y,x,"d",y1,x1,grid[y + y1][x + x1], ok);
   }
     break;
+	
     case "w" :
     let copy = display(OGgrid, rotateSquare(array), x, y);
     let num1 = 0, num2 = 0;
@@ -129,6 +131,19 @@ function collision(OGgrid, array, x, y, setting) {
     }
     if(num1 !== num2) ok = false;
     break;
+	
+	case "s" :
+			let x1 = 0;
+	for(let y1 = array.length-1; y1 > 0; y1--) {
+		for(let x2 = 0; x2<array[y1].length;x2++) {
+			if(array[y1][x2] === "[]") {
+			x1 = y1;
+			y1 = 0;
+			break;}
+		}
+	}
+	if(OGgrid[y + x1 + 1][x] === "[]" || OGgrid[y + x1 + 1][x] === "==") ok = false;
+	console.log(OGgrid[y + x1 + 1][x], ok, x, y, x1);
   }
   return ok;
 }
@@ -142,7 +157,7 @@ let key;
 let current;
 let x = 5;
 let y = 0;
-
+let gravCounter = 0;
 //#####SETUP#####
 function start() {
     gameOn = true;
@@ -169,46 +184,49 @@ let next = document.querySelector("#next");
 
 //#####DRAW#####
 function draw() {
-
-if(inputStream.length === 0) {return;}
-else {
+	gravCounter = gravCounter < 4 ? gravCounter + 1 : 0;
+	y = gravCounter === 3 ? collision(gameGrid, current, x, y, "s") ? y + 1 : y : y;
+	
+	
   for(let y = 0; y < frames[0].length;y++) {
     frames[1].push([]);
     for(let x = 0; x < frames[0][y].length;x++) {
       frames[1][y].push(frames[0][y][x]);
     }
-  }}
+  }
 
 
-  for(x in inputStream) {
-    console.log("this is x    " + inputStream[x]);
-    switch(inputStream[x]) {
+  for(letter in inputStream) {
+    console.log("this is x    " + inputStream[letter]);
+    switch(inputStream[letter]) {
       case "a":
-      if(collision(frames[1], current, x, y, "a")) x--;
-      frames[1] = display(frames[1], current, x, y);
+      if(collision(gameGrid, current, x, y, "a")) x--;
+      //frames[1] = display(frames[1], current, x, y);
        break;
       case "d":
-      if(collision(frames[1], current, x, y, "d")) x++;
-      frames[1] = display(frames[1], current, x, y);
+      if(collision(gameGrid, current, x, y, "d")) x++;
+      //frames[1] = display(frames[1], current, x, y);
       break;
       case "w" :
-      if(collision(frames[1], current, x, y, "w")) current = rotateSquare(current);
-      frames[1] = display(frames[1], current, x, y);
+      if(collision(gameGrid, current, x, y, "w")) current = rotateSquare(current);
+      //frames[1] = display(frames[1], current, x, y);
       break;
       case "s" :
-      if(y<19)y++;
-      frames[1] = display(frames[1], current, x, y);
+      if(collision(gameGrid, current, x, y, "s")) y++;
+      //frames[1] = ;
       break;
       default :
-      frames[1] = display(frames[1], current, x, y);
+      //frames[1] = display(frames[1], current, x, y);
       break;
     }
   }
  inputStream = [];
+  console.log(x);
+  console.log(y);
   console.log("draw")
 
   next.innerHTML = arrayToString(current);
-  grid.innerHTML = arrayToGrid(frames[1]);
+  grid.innerHTML = arrayToGrid(display(frames[0], current, x, y));
   frames[1] = [];
 
 }
