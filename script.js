@@ -137,7 +137,7 @@ let scr = document.querySelector("#scr");
 let grid = document.querySelector("#grid");
 let contr = document.querySelector("#contr");
 let game = document.querySelector("#game");
-let once = true;
+let gameOn = false;
 let key;
 let current;
 let x = 5;
@@ -145,12 +145,9 @@ let y = 0;
 
 //#####SETUP#####
 function start() {
-  
-}
+    gameOn = true;
 
-
-function setup() {
-scr.innerHTML = "FULL LINES = <span id=\"lines\">0</span><br>LEVEL = <span id=\"lvl\">0</span><br>SCORE = <span id=\"score\">0</span><br>TIME = <span id=\"time\">0</span><br><br><span id=\"next\"></span>"
+    scr.innerHTML = "FULL LINES = <span id=\"lines\">0</span><br>LEVEL = <span id=\"lvl\">0</span><br>SCORE = <span id=\"score\">0</span><br>TIME = <span id=\"time\">0</span><br><br><span id=\"next\"></span>"
 grid.innerHTML = arrayToString(gameGrid);
 contr.innerHTML = "ROTATE: w<br>MOVE LEFT: a<br>MOVE RIGHT: d"
 current = sprites[getRandomArbitrary(0, 7)]
@@ -162,10 +159,16 @@ let next = document.querySelector("#next");
   setInterval(() => {
     timer++;time.innerHTML = timer+ "s";
   }, difficulty);
-};
+
+
+    window.setInterval(() => {draw();}, 100);
+}
+
+
 
 //#####DRAW#####
 function draw() {
+
   let gamePlay = [];
   for(let y = 0; y < gameGrid.length;y++) {
     gamePlay.push([]);
@@ -173,33 +176,34 @@ function draw() {
       gamePlay[y].push(gameGrid[y][x]);
     }
   }
- switch(key) {
-   case "a":
-   if(collision(gamePlay, current, x, y, "a")) x--;
-   gamePlay = display(gamePlay, current, x, y);
-    break;
-   case "d":
-   if(collision(gamePlay, current, x, y, "d")) x++;
-   gamePlay = display(gamePlay, current, x, y);
-   break;
-   case "w" :
-   if(collision(gamePlay, current, x, y, "w")) current = rotateSquare(current);
-   gamePlay = display(gamePlay, current, x, y);
-   break;
-   case "s" :
-   if(y<19)y++;
-   gamePlay = display(gamePlay, current, x, y);
-   break;
-   default :
-   gamePlay = display(gamePlay, current, x, y);
-   break;
- }
+  for(x in inputStream) {
+    switch(x) {
+      case "a":
+      if(collision(gamePlay, current, x, y, "a")) x--;
+      gamePlay = display(gamePlay, current, x, y);
+       break;
+      case "d":
+      if(collision(gamePlay, current, x, y, "d")) x++;
+      gamePlay = display(gamePlay, current, x, y);
+      break;
+      case "w" :
+      if(collision(gamePlay, current, x, y, "w")) current = rotateSquare(current);
+      gamePlay = display(gamePlay, current, x, y);
+      break;
+      case "s" :
+      if(y<19)y++;
+      gamePlay = display(gamePlay, current, x, y);
+      break;
+      default :
+      gamePlay = display(gamePlay, current, x, y);
+      break;
+    }
+  }
+ inputStream = [];
+  console.log("draw")
 
-
-
-
-  next.innerHTML = arrayToString(current);
-  grid.innerHTML = arrayToGrid(gamePlay);
+ // next.innerHTML = arrayToString(current);
+  //grid.innerHTML = arrayToGrid(gamePlay);
 }
 //the thing that makes everything work
 
@@ -210,11 +214,9 @@ document.addEventListener('keydown', (event) => {
   inputStream.push(key);
 console.log(inputStream);
   //
-  if(key === " " && once) {
-    once = false; setup();
-    //start();
+  if(key === " " && !gameOn) {
+    start();
   }
- 
-    draw();
+
   //
 });
