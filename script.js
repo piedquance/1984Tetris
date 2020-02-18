@@ -133,19 +133,62 @@ function collision(OGgrid, array, x, y, setting) {
     break;
 	
 	case "s" :
-			let x1 = 0;
+      let Y = 0;
+      let X = 0;
 	for(let y1 = array.length-1; y1 > 0; y1--) {
 		for(let x2 = 0; x2<array[y1].length;x2++) {
 			if(array[y1][x2] === "[]") {
-			x1 = y1;
-			y1 = 0;
-			break;}
-		}
+        if(OGgrid[y + y1 + 1][x + x2] === "[]" || OGgrid[y + y1 + 1][x] === "==") {
+          ok = false;
+          Y = y1;
+          X = x2;
+          y1 = 0;
+          break;
+        } }
+		} 
 	}
-	if(OGgrid[y + x1 + 1][x] === "[]" || OGgrid[y + x1 + 1][x] === "==") ok = false;
-	console.log(OGgrid[y + x1 + 1][x], ok, x, y, x1);
+
+	console.log(OGgrid[y + Y + 1][x], ok, x, y, Y);
   }
   return ok;
+}
+
+function checkLine(OGgrid) {
+
+
+  let newGrid = [];
+
+  for(let y = 0; y < OGgrid.length;y++) {
+    newGrid.push([]);
+    for(let x = 0; x < OGgrid[y].length;x++) {
+      newGrid[y][x] = OGgrid[y][x];
+    }
+  }
+
+  let lines = -1;
+  let isFull = false;
+  for(let y = OGgrid.length-2; y > OGgrid.length - 6; y-- ) {
+    for(let x = 1; x < OGgrid[y].length - 2; x++) {
+      if(OGgrid[y][x] === " .") {
+        isFull = false;
+        break;
+      } else {
+        isFull = true;
+      }
+
+    }
+    if(isFull) lines++;
+  }
+  if(isFull > 0) {
+    console.log("in");
+    for(let y = OGgrid.length-2; y > OGgrid.length - 2 - lines; y--) {
+      for(let x = 1; x < OGgrid[y].length - 2; x++) { 
+        grid[y][x] = " ."; 
+      }
+    }}
+
+  console.log("Full lines: " + lines)
+  return newGrid;
 }
 //VARIABLE DECLARATION DEPOSIT
 let scr = document.querySelector("#scr");
@@ -154,10 +197,12 @@ let contr = document.querySelector("#contr");
 let game = document.querySelector("#game");
 let gameOn = false;
 let key;
-let current;
+let current = [];
 let x = 5;
 let y = 0;
+let tempY = 0;
 let gravCounter = 0;
+let stillCounter = 0;
 //#####SETUP#####
 function start() {
     gameOn = true;
@@ -165,7 +210,8 @@ function start() {
     scr.innerHTML = "FULL LINES = <span id=\"lines\">0</span><br>LEVEL = <span id=\"lvl\">0</span><br>SCORE = <span id=\"score\">0</span><br>TIME = <span id=\"time\">0</span><br><br><span id=\"next\"></span>"
 grid.innerHTML = arrayToString(gameGrid);
 contr.innerHTML = "ROTATE: w<br>MOVE LEFT: a<br>MOVE RIGHT: d"
-current = sprites[getRandomArbitrary(0, 7)]
+current.push(sprites[getRandomArbitrary(0, 7)]);
+current.push(sprites[getRandomArbitrary(0, 7)]);
 let timer = 0;
 let difficulty = 1000;
 let time = document.querySelector("#time");
@@ -184,8 +230,7 @@ let next = document.querySelector("#next");
 
 //#####DRAW#####
 function draw() {
-	gravCounter = gravCounter < 4 ? gravCounter + 1 : 0;
-	y = gravCounter === 3 ? collision(gameGrid, current, x, y, "s") ? y + 1 : y : y;
+
 	
 	
   for(let y = 0; y < frames[0].length;y++) {
@@ -195,24 +240,28 @@ function draw() {
     }
   }
 
+  tempY = y;
 
+  gravCounter = gravCounter < 4 ? gravCounter + 1 : 0;
+  y = gravCounter === 3 ? collision(frames[0], current[0], x, y, "s") ? y + 1 : y : y;
+  
   for(letter in inputStream) {
     console.log("this is x    " + inputStream[letter]);
     switch(inputStream[letter]) {
       case "a":
-      if(collision(gameGrid, current, x, y, "a")) x--;
+      if(collision(frames[0], current[0], x, y, "a")) x--;
       //frames[1] = display(frames[1], current, x, y);
        break;
       case "d":
-      if(collision(gameGrid, current, x, y, "d")) x++;
+      if(collision(frames[0], current[0], x, y, "d")) x++;
       //frames[1] = display(frames[1], current, x, y);
       break;
       case "w" :
-      if(collision(gameGrid, current, x, y, "w")) current = rotateSquare(current);
+      if(collision(frames[0], current[0], x, y, "w")) current[0] = rotateSquare(current[0]);
       //frames[1] = display(frames[1], current, x, y);
       break;
       case "s" :
-      if(collision(gameGrid, current, x, y, "s")) y++;
+      if(collision(frames[0], current[0], x, y, "s")) y++;
       //frames[1] = ;
       break;
       default :
@@ -220,13 +269,26 @@ function draw() {
       break;
     }
   }
+
+stillCounter = (tempY === y) ? stillCounter+1 : 0;
+if(stillCounter > 4) {
+
+  frames[0] = display(frames[0], current[0], x, y);
+  frames[0] = checkLine(frames[0]);
+ x = 5;
+ y = 0;
+ current.unshift(current.pop());
+current[1] = sprites[getRandomArbitrary(0, 7)];
+stillCounter = 0;
+
+}
  inputStream = [];
-  console.log(x);
-  console.log(y);
+
   console.log("draw")
 
-  next.innerHTML = arrayToString(current);
-  grid.innerHTML = arrayToGrid(display(frames[0], current, x, y));
+
+  next.innerHTML = arrayToString(current[1]);
+  grid.innerHTML = arrayToGrid(display(frames[0], current[0], x, y));
   frames[1] = [];
 
 }
