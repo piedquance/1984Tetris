@@ -167,25 +167,23 @@ function checkLine(OGgrid) {
 
   let lines = -1;
   let isFull = false;
-  for(let y = OGgrid.length-2; y > OGgrid.length - 6; y-- ) {
+  for(let y = OGgrid.length-3; y > OGgrid.length - 6; y-- ) {
     for(let x = 1; x < OGgrid[y].length - 2; x++) {
       if(OGgrid[y][x] === " .") {
         isFull = false;
         break;
-      } else {
+        } else {
         isFull = true;
       }
-
     }
-    if(isFull) lines++;
-  }
-  if(isFull > 0) {
-    console.log("in");
-    for(let y = OGgrid.length-2; y > OGgrid.length - 2 - lines; y--) {
+
+    if(isFull) {
       for(let x = 1; x < OGgrid[y].length - 2; x++) { 
-        grid[y][x] = " ."; 
+        newGrid[y][x] = " ."; 
       }
-    }}
+    }
+  }
+
 
   console.log("Full lines: " + lines)
   return newGrid;
@@ -292,6 +290,7 @@ stillCounter = 0;
   frames[1] = [];
 
 }
+
 //the thing that makes everything work
 
 let inputStream = [];
@@ -301,10 +300,10 @@ document.addEventListener('keydown', (event) => {
   key = event.key;
   inputStream.push(key);
 console.log(inputStream);
-  //
+
   if(key === " " && !gameOn) {
     start();
   }
 
-  //
+
 });
