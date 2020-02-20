@@ -23,6 +23,7 @@ let gameGrid = [[" "," "," "," "," "," "," "," "," "," "," "],
   ["&lt!"," ."," ."," ."," ."," ."," ."," ."," ."," .", " .","!>"],
   ["&lt!","==","==","==","==","==","==","==","==","==","==","!>",],
 ["\\/\\/\\/\\/\\/\\/\\/\\/\\/\\/\\/"]];
+let cleanLine =   ["&lt!"," ."," ."," ."," ."," ."," ."," ."," ."," .", " .","!>"]
 const sprites = [[
 ["","[]","[]"],
 ["[]","[]",""],
@@ -155,20 +156,19 @@ function collision(OGgrid, array, x, y, setting) {
 
 function checkLine(OGgrid) {
 
-
+  let fullLines= [];
   let newGrid = [];
 
   for(let y = 0; y < OGgrid.length;y++) {
     newGrid.push([]);
     for(let x = 0; x < OGgrid[y].length;x++) {
-      newGrid[y][x] = OGgrid[y][x];
-    }
-  }
+      newGrid[y][x] = OGgrid[y][x];}}
+
 
   let lines = -1;
   let isFull = false;
-  for(let y = OGgrid.length-3; y > OGgrid.length - 6; y-- ) {
-    for(let x = 1; x < OGgrid[y].length - 2; x++) {
+  for(let y = OGgrid.length-3; y > 0; y-- ) {
+    for(let x = 1; x < OGgrid[y].length - 1; x++) {
       if(OGgrid[y][x] === " .") {
         isFull = false;
         break;
@@ -176,19 +176,21 @@ function checkLine(OGgrid) {
         isFull = true;
       }
     }
-
     if(isFull) {
-      for(let x = 1; x < OGgrid[y].length - 2; x++) { 
-        newGrid[y][x] = " ."; 
-      }
+       fullLines.push[y];
+       newGrid[y] = cleanLine;
     }
   }
 
+  for(let x = 0; x < fullLines.length; x++) {
+    newGrid.splice(fullLines[x] - 4, fullLines[x] + 1);
+  }
 
-  console.log("Full lines: " + lines)
   return newGrid;
 }
+
 //VARIABLE DECLARATION DEPOSIT
+
 let scr = document.querySelector("#scr");
 let grid = document.querySelector("#grid");
 let contr = document.querySelector("#contr");
@@ -201,32 +203,38 @@ let y = 0;
 let tempY = 0;
 let gravCounter = 0;
 let stillCounter = 0;
+let topCounter = 0;
+let drop = false;
+let fullLines = 0;
+let level = 0;
+let score = 0;
+let time = 0;
+let difficulty = 1000;
+
 //#####SETUP#####
+
 function start() {
     gameOn = true;
 
-    scr.innerHTML = "FULL LINES = <span id=\"lines\">0</span><br>LEVEL = <span id=\"lvl\">0</span><br>SCORE = <span id=\"score\">0</span><br>TIME = <span id=\"time\">0</span><br><br><span id=\"next\"></span>"
+scr.innerHTML = "FULL LINES = <span id=\"lines\">" + fullLines
++ "</span><br>LEVEL = <span id=\"lvl\">" + level
++"</span><br>SCORE = <span id=\"score\">" + score
++"</span><br>TIME = <span id=\"time\">0</span><br><br><span id=\"next\"></span>"
 grid.innerHTML = arrayToString(gameGrid);
 contr.innerHTML = "ROTATE: w<br>MOVE LEFT: a<br>MOVE RIGHT: d"
 current.push(sprites[getRandomArbitrary(0, 7)]);
 current.push(sprites[getRandomArbitrary(0, 7)]);
-let timer = 0;
-let difficulty = 1000;
 let time = document.querySelector("#time");
 let lvl = document.querySelector("#lvl");
 let next = document.querySelector("#next");
-  setInterval(() => {
-    timer++;time.innerHTML = timer+ "s";
-  }, difficulty);
 
   frames.push(gameGrid);
   frames[1] = [];
-    window.setInterval(() => {draw();}, 100);
+    var game = window.setInterval(() => {draw();}, 100);
 }
 
-
-
 //#####DRAW#####
+
 function draw() {
 
 	
@@ -259,7 +267,8 @@ function draw() {
       //frames[1] = display(frames[1], current, x, y);
       break;
       case "s" :
-      if(collision(frames[0], current[0], x, y, "s")) y++;
+      while(collision(frames[0], current[0], x, y, "s")) y++;
+      drop = true;
       //frames[1] = ;
       break;
       default :
@@ -269,7 +278,7 @@ function draw() {
   }
 
 stillCounter = (tempY === y) ? stillCounter+1 : 0;
-if(stillCounter > 4) {
+if(stillCounter > 4 || drop) {
 
   frames[0] = display(frames[0], current[0], x, y);
   frames[0] = checkLine(frames[0]);
@@ -278,8 +287,39 @@ if(stillCounter > 4) {
  current.unshift(current.pop());
 current[1] = sprites[getRandomArbitrary(0, 7)];
 stillCounter = 0;
-
+drop  = false;
 }
+
+time += 0.1;
+  scr.innerHTML = "FULL LINES = <span id=\"lines\">" + fullLines
+    + "</span><br>LEVEL = <span id=\"lvl\">" + level
+    +"</span><br>SCORE = <span id=\"score\">" + score
+    +"</span><br>TIME = <span id=\"time\">" + Math.trunc(time) + "</span><br><br><span id=\"next\"></span>"
+
+
+topCounter = (y === 0) ? topCounter+1 : 0;
+if(topCounter > 5) {
+  gameOn = false;
+  console.log("END")
+clearInterval(game);
+scr.innerHTML = "";
+grid.innerHTML = "[]&nbsp&nbsp&nbsp&nbsp<br>TETRIS<br>&nbsp&nbsp&nbsp&nbsp[]<br><br><br><br><br><span id=\"press\">Press space to begin</span></div>";
+contr.innerHTML = "";
+frames = [];
+ current = [];
+ x = 5;
+ y = 0;
+ tempY = 0;
+ gravCounter = 0;
+ stillCounter = 0;
+ topCounter = 0;
+ drop = false;
+ fullLines = 0;
+ level = 0;
+ score = 0;
+ time = 0;
+}
+
  inputStream = [];
 
   console.log("draw")
