@@ -56,7 +56,7 @@ const sprites = [[
 // INDEPENDANT FUNCTION UNION
 function arrayToGrid(mapT) {let mapImage = "";for(let row = 2; row < mapT.length; row++) {for(let unit = 0; unit < mapT[row].length; unit++) {mapImage += mapT[row][unit];}mapImage += "<br>";}return mapImage;};
 
-function arrayToString(mapT) {let mapImage = "";for(let row = 0; row < mapT.length; row++) {for(let unit = 0; unit < mapT[row].length; unit++) {mapImage += mapT[row][unit];}mapImage += "<br>";}return mapImage;};
+function arrayToString(mapT) {let mapImage = "";for(let row = 0; row < mapT.length; row++) {for(let unit = 0; unit < mapT[row].length; unit++) {mapImage += mapT[row][unit] === "" ? "&nbsp&nbsp":mapT[row][unit];}mapImage += "<br>";}return mapImage;};
 
 function rotateSquare(array) {
   let copy = [];
@@ -294,7 +294,7 @@ time += 0.1;
   scr.innerHTML = "FULL LINES = <span id=\"lines\">" + fullLines
     + "</span><br>LEVEL = <span id=\"lvl\">" + level
     +"</span><br>SCORE = <span id=\"score\">" + score
-    +"</span><br>TIME = <span id=\"time\">" + Math.trunc(time) + "</span><br><br><span id=\"next\"></span>"
+    +"</span><br>TIME = <span id=\"time\">" + Math.trunc(time) + "</span><br><br><span id=\"next\">" + arrayToString(current[1]) +"</span>"
 
 
 topCounter = (y === 0) ? topCounter+1 : 0;
@@ -325,7 +325,6 @@ frames = [];
   console.log("draw")
 
 
-  next.innerHTML = arrayToString(current[1]);
   grid.innerHTML = arrayToGrid(display(frames[0], current[0], x, y));
   frames[1] = [];
 
