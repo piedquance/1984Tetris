@@ -1,6 +1,6 @@
 //"sprites"
-let gameGrid = [[" "," "," "," "," "," "," "," "," "," "," "],
-[" "," "," "," "," "," "," "," "," "," "," "],
+let gameGrid = [["","","","","","","","","","",""],
+["","","","","","","","","","",""],
   ["&lt!"," ."," ."," ."," ."," ."," ."," ."," ."," .", " .","!>"],
   ["&lt!"," ."," ."," ."," ."," ."," ."," ."," ."," .", " .","!>"],
   ["&lt!"," ."," ."," ."," ."," ."," ."," ."," ."," .", " .","!>"],
@@ -54,7 +54,7 @@ const sprites = [[
 ["[]","[]"]
 ]]
 // INDEPENDANT FUNCTION UNION
-function arrayToGrid(mapT) {let mapImage = "";for(let row = 2; row < mapT.length; row++) {for(let unit = 0; unit < mapT[row].length; unit++) {mapImage += mapT[row][unit];}mapImage += "<br>";}return mapImage;};
+function arrayToGrid(mapT) {let mapImage = "";for(let row = 2; row < mapT.length; row++) {for(let unit = 0; unit < mapT[row].length; unit++) {mapImage += mapT[row][unit] == "" ? "&nbsp&nbsp":mapT[row][unit];}mapImage += "<br>";}return mapImage;};
 
 function arrayToString(mapT) {let mapImage = "";for(let row = 0; row < mapT.length; row++) {for(let unit = 0; unit < mapT[row].length; unit++) {mapImage += mapT[row][unit] === "" ? "&nbsp&nbsp":mapT[row][unit];}mapImage += "<br>";}return mapImage;};
 
@@ -177,13 +177,15 @@ function checkLine(OGgrid) {
       }
     }
     if(isFull) {
-       fullLines.push[y];
+       fullLines.push(y);
        newGrid[y] = cleanLine;
     }
   }
-
+console.log(fullLines);
   for(let x = 0; x < fullLines.length; x++) {
-    newGrid.splice(fullLines[x] - 4, fullLines[x] + 1);
+    newGrid.splice(fullLines[x], 1);
+    newGrid.splice(2, 0,  ["&lt!"," ."," ."," ."," ."," ."," ."," ."," ."," .", " .","!>"]);
+    //if(fullLines.length !== 1) newGrid.splice(2, 0,  ["&lt!"," ."," ."," ."," ."," ."," ."," ."," ."," .", " .","!>"]);
   }
 
   return newGrid;
@@ -256,23 +258,18 @@ function draw() {
     switch(inputStream[letter]) {
       case "a":
       if(collision(frames[0], current[0], x, y, "a")) x--;
-      //frames[1] = display(frames[1], current, x, y);
-       break;
+      break;
       case "d":
       if(collision(frames[0], current[0], x, y, "d")) x++;
-      //frames[1] = display(frames[1], current, x, y);
       break;
       case "w" :
       if(collision(frames[0], current[0], x, y, "w")) current[0] = rotateSquare(current[0]);
-      //frames[1] = display(frames[1], current, x, y);
       break;
       case "s" :
       while(collision(frames[0], current[0], x, y, "s")) y++;
       drop = true;
-      //frames[1] = ;
       break;
       default :
-      //frames[1] = display(frames[1], current, x, y);
       break;
     }
   }
