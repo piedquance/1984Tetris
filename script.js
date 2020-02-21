@@ -134,29 +134,22 @@ function collision(OGgrid, array, x, y, setting) {
     break;
 	
 	case "s" :
-      let Y = 0;
-      let X = 0;
-	for(let y1 = array.length-1; y1 > 0; y1--) {
-		for(let x2 = 0; x2<array[y1].length;x2++) {
-			if(array[y1][x2] === "[]") {
-        if(OGgrid[y + y1 + 1][x + x2] === "[]" || OGgrid[y + y1 + 1][x] === "==") {
-          ok = false;
-          Y = y1;
-          X = x2;
-          y1 = 0;
-          break;
-        } }
-		} 
-	}
 
-	console.log(OGgrid[y + Y + 1][x], ok, x, y, Y);
+  for(let x2 = 0; x2<array[0].length;x2++) {
+	for(let y1 = array.length-1; y1 > 0; y1--) {
+			if(array[y1][x2] === "[]") {
+        if(OGgrid[y + y1 + 1][x + x2] === "[]" || OGgrid[y + y1 + 1][x + x2] === "==") {
+          ok = false;
+          break;
+        } x2++ }
+		} 
   }
+ break; 
+}
   return ok;
 }
 
 function checkLine(OGgrid) {
-
-  let fullLines= [];
   let newGrid = [];
 
   for(let y = 0; y < OGgrid.length;y++) {
@@ -177,15 +170,10 @@ function checkLine(OGgrid) {
       }
     }
     if(isFull) {
-       fullLines.push(y);
-       newGrid[y] = cleanLine;
-    }
-  }
-console.log(fullLines);
-  for(let x = 0; x < fullLines.length; x++) {
-    newGrid.splice(fullLines[x], 1);
-    newGrid.splice(2, 0,  ["&lt!"," ."," ."," ."," ."," ."," ."," ."," ."," .", " .","!>"]);
-    //if(fullLines.length !== 1) newGrid.splice(2, 0,  ["&lt!"," ."," ."," ."," ."," ."," ."," ."," ."," .", " .","!>"]);
+       newGrid.splice(y, 1);
+       newGrid.splice(2, 0,  ["&lt!"," ."," ."," ."," ."," ."," ."," ."," ."," .", " .","!>"]);
+      fullLines++;
+      }
   }
 
   return newGrid;
@@ -207,7 +195,7 @@ let gravCounter = 0;
 let stillCounter = 0;
 let topCounter = 0;
 let drop = false;
-let fullLines = 0;
+let fullLines = -1;
 let level = 0;
 let score = 0;
 let time = 0;
