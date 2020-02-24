@@ -19,11 +19,12 @@ let gameGrid = [["","","","","","","","","","",""],
   ["&lt!"," ."," ."," ."," ."," ."," ."," ."," ."," .", " .","!>"],
   ["&lt!"," ."," ."," ."," ."," ."," ."," ."," ."," .", " .","!>"],
   ["&lt!"," ."," ."," ."," ."," ."," ."," ."," ."," .", " .","!>"],
-  ["&lt!"," ."," ."," ."," ."," ."," ."," ."," ."," .", " .","!>"],
-  ["&lt!"," ."," ."," ."," ."," ."," ."," ."," ."," .", " .","!>"],
+  ["&lt!","[]","[]","[]","[]","[]","[]","[]","[]","[]", "[]","!>"],
+  ["&lt!","[]","[]","[]","[]","[]","[]","[]","[]","[]", "[]","!>"],
   ["&lt!","==","==","==","==","==","==","==","==","==","==","!>",],
 ["\\/\\/\\/\\/\\/\\/\\/\\/\\/\\/\\/"]];
 let cleanLine =   ["&lt!"," ."," ."," ."," ."," ."," ."," ."," ."," .", " .","!>"]
+let fullLine1 =   ["&lt!","[]","[]","[]","[]","[]","[]","[]","[]","[]", "[]","!>"]
 const sprites = [[
 ["","[]","[]"],
 ["[]","[]",""],
@@ -148,6 +149,22 @@ function collision(OGgrid, array, x, y, setting) {
 }
   return ok;
 }
+//from https://stackoverflow.com/questions/3115982/how-to-check-if-two-arrays-are-equal-with-javascript
+function arraysEqual(a, b) {
+  if (a === b) return true;
+  if (a == null || b == null) return false;
+  if (a.length != b.length) return false;
+
+  // If you don't care about the order of the elements inside
+  // the array, you should sort both arrays here.
+  // Please note that calling sort on an array will modify that array.
+  // you might want to clone your array first.
+
+  for (var i = 0; i < a.length; ++i) {
+    if (a[i] !== b[i]) return false;
+  }
+  return true;
+}
 
 function checkLine(OGgrid) {
   let newGrid = [];
@@ -157,24 +174,24 @@ function checkLine(OGgrid) {
     for(let x = 0; x < OGgrid[y].length;x++) {
       newGrid[y][x] = OGgrid[y][x];}}
 
-
-  let lines = -1;
   let isFull = false;
   for(let y = OGgrid.length-3; y > 0; y-- ) {
-    for(let x = 1; x < OGgrid[y].length - 1; x++) {
-      if(OGgrid[y][x] === " .") {
-        isFull = false;
-        break;
-        } else {
-        isFull = true;
-      }
-    }
-    if(isFull) {
-       newGrid.splice(y, 1);
-       newGrid.splice(2, 0,  ["&lt!"," ."," ."," ."," ."," ."," ."," ."," ."," .", " .","!>"]);
+    console.log(OGgrid[y])
+    console.log(arraysEqual(OGgrid[y], fullLine1))
+      if(arraysEqual(OGgrid[y], fullLine1)) {
+        newGrid.splice(y, 1);
+       newGrid.splice(y, 0,  ["&lt0"," ."," ."," ."," ."," ."," ."," ."," ."," .", " .","!>"]);
       fullLines++;
-      }
-  }
+    //     } else {
+    //     isFull = true;
+    //   }
+    // if(isFull) {
+    //    newGrid.splice(y, 1);
+    //    newGrid.splice(2, 0,  ["&lt0"," ."," ."," ."," ."," ."," ."," ."," ."," .", " .","!>"]);
+    //   fullLines++;
+      //checkLine(newGrid);
+      } //else return newGrid;
+    }
 
   return newGrid;
 }
@@ -273,15 +290,15 @@ drop  = false;
 }
 
 time += 0.1;
-  scr.innerHTML = "FULL LINES = <span id=\"lines\">" + fullLines
+  scr.innerHTML = "FULL LINES = <span id=\"lines\">" + (fullLines === -1 ? 0 : fullLines)
     + "</span><br>LEVEL = <span id=\"lvl\">" + level
     +"</span><br>SCORE = <span id=\"score\">" + score
     +"</span><br>TIME = <span id=\"time\">" + Math.trunc(time) + "</span><br><br><span id=\"next\">" + arrayToString(current[1]) +"</span>"
 
 
 topCounter = (y === 0) ? topCounter+1 : 0;
-if(topCounter > 5) {
-  gameOn = false;
+if(topCounter > 6) {
+
 grid.innerHTML = "[]&nbsp&nbsp&nbsp&nbsp<br>GAME OVER<br>&nbsp&nbsp&nbsp&nbsp[]<br><br><br><br><br><span id=\"press\">Press space to replay</span></div>";
 frames = [];
  current = [];
@@ -293,7 +310,9 @@ frames = [];
  topCounter = 0;
  drop = false;
  time = 0;
- 
+ document.addEventListener('keydown', (event) => {
+ if(event.key === " ") window.location.reload();
+});
 }
 
  inputStream = [];

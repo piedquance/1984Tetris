@@ -14,3 +14,4 @@
 //14.Remove lines that are full, and increment the counter when that happens
 15.Have a scoring and level system
 16.Fix bugs
+checkLine(gameGrid)
