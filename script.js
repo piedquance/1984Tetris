@@ -156,7 +156,7 @@ function collision(OGgrid, array, x, y, setting) {
 
 function checkLine(OGgrid) {
 
-  let fullLines= [];
+  let fullLineArray= [];
   let newGrid = [];
 
   for(let y = 0; y < OGgrid.length;y++) {
@@ -177,13 +177,13 @@ function checkLine(OGgrid) {
       }
     }
     if(isFull) {
-       fullLines.push(y);
+      fullLineArray.push(y);
        newGrid[y] = cleanLine;
     }
   }
-console.log(fullLines);
-  for(let x = 0; x < fullLines.length; x++) {
-    newGrid.splice(fullLines[x], 1);
+console.log(fullLineArray);
+  for(let x = 0; x < fullLineArray.length; x++) {
+    newGrid.splice(fullLineArray[x], 1);
     newGrid.splice(2, 0,  ["&lt!"," ."," ."," ."," ."," ."," ."," ."," ."," .", " .","!>"]);
     //if(fullLines.length !== 1) newGrid.splice(2, 0,  ["&lt!"," ."," ."," ."," ."," ."," ."," ."," ."," .", " .","!>"]);
   }
@@ -212,7 +212,6 @@ let level = 0;
 let score = 0;
 let time = 0;
 let difficulty = 1000;
-
 //#####SETUP#####
 
 function start() {
@@ -239,8 +238,6 @@ let next = document.querySelector("#next");
 
 function draw() {
 
-	
-	
   for(let y = 0; y < frames[0].length;y++) {
     frames[1].push([]);
     for(let x = 0; x < frames[0][y].length;x++) {
@@ -297,11 +294,7 @@ time += 0.1;
 topCounter = (y === 0) ? topCounter+1 : 0;
 if(topCounter > 5) {
   gameOn = false;
-  console.log("END")
-clearInterval(game);
-scr.innerHTML = "";
-grid.innerHTML = "[]&nbsp&nbsp&nbsp&nbsp<br>TETRIS<br>&nbsp&nbsp&nbsp&nbsp[]<br><br><br><br><br><span id=\"press\">Press space to begin</span></div>";
-contr.innerHTML = "";
+grid.innerHTML = "[]&nbsp&nbsp&nbsp&nbsp<br>GAME OVER<br>&nbsp&nbsp&nbsp&nbsp[]<br><br><br><br><br><span id=\"press\">Press space to replay</span></div>";
 frames = [];
  current = [];
  x = 5;
@@ -311,10 +304,8 @@ frames = [];
  stillCounter = 0;
  topCounter = 0;
  drop = false;
- fullLines = 0;
- level = 0;
- score = 0;
  time = 0;
+ 
 }
 
  inputStream = [];
@@ -340,6 +331,5 @@ console.log(inputStream);
   if(key === " " && !gameOn) {
     start();
   }
-
 
 });
