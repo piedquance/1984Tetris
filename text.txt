@@ -12,6 +12,5 @@
 //12.Make it random
 //13.Game finishes or restarts when top line is almost full
 //14.Remove lines that are full, and increment the counter when that happens
-15.Have a scoring and level system
+//15.Have a scoring and level system
 16.Fix bugs
-checkLine(gameGrid)

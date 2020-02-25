@@ -137,11 +137,11 @@ function collision(OGgrid, array, x, y, setting) {
 	case "s" :
 
   for(let x2 = 0; x2<array[0].length;x2++) {
-	for(let y1 = array.length-1; y1 > 0; y1--) {
+	for(let y1 = array.length-1; y1 >= 0; y1--) {
 			if(array[y1][x2] === "[]") {
         if(OGgrid[y + y1 + 1][x + x2] === "[]" || OGgrid[y + y1 + 1][x + x2] === "==") {
           ok = false;
-          break;
+          break;w
         } x2++ }
 		} 
   }
@@ -180,17 +180,10 @@ function checkLine(OGgrid) {
     console.log(arraysEqual(OGgrid[y], fullLine1))
       if(arraysEqual(OGgrid[y], fullLine1)) {
         newGrid.splice(y, 1);
-       newGrid.splice(2, 0,  ["&lt0"," ."," ."," ."," ."," ."," ."," ."," ."," .", " .","!>"]);
+       newGrid.splice(2, 0,  ["&lt!"," ."," ."," ."," ."," ."," ."," ."," ."," .", " .","!>"]);
       fullLines++;
-    //     } else {
-    //     isFull = true;
-    //   }
-    // if(isFull) {
-    //    newGrid.splice(y, 1);
-    //    newGrid.splice(2, 0,  ["&lt0"," ."," ."," ."," ."," ."," ."," ."," ."," .", " .","!>"]);
-    //   fullLines++;
-      //checkLine(newGrid);
-      } //else return newGrid;
+      lineCount++;
+      } 
     }
 
   return newGrid;
@@ -216,7 +209,7 @@ let fullLines = -1;
 let level = 0;
 let score = 0;
 let time = 0;
-let difficulty = 1000;
+let lineCount = 0;
 //#####SETUP#####
 
 function start() {
@@ -236,7 +229,7 @@ let next = document.querySelector("#next");
 
   frames.push(gameGrid);
   frames[1] = [];
-    var game = window.setInterval(() => {draw();}, 100);
+    var game = window.setInterval(() => {draw();}, 1);
 }
 
 //#####DRAW#####
@@ -252,8 +245,8 @@ function draw() {
 
   tempY = y;
 
-  gravCounter = gravCounter < 4 ? gravCounter + 1 : 0;
-  y = gravCounter === 3 ? collision(frames[0], current[0], x, y, "s") ? y + 1 : y : y;
+  gravCounter = gravCounter < 81 ? gravCounter + 1 : 0;
+  y = gravCounter === 80 ? collision(frames[0], current[0], x, y, "s") ? y + 1 : y : y;
   
   for(letter in inputStream) {
     console.log("this is x    " + inputStream[letter]);
@@ -275,12 +268,18 @@ function draw() {
       break;
     }
   }
-
+  level = Math.trunc(fullLines/10) + 1;
 stillCounter = (tempY === y) ? stillCounter+1 : 0;
-if(stillCounter > 4 || drop) {
+if(stillCounter > 90 || drop) {
 
   frames[0] = display(frames[0], current[0], x, y);
   frames[0] = checkLine(frames[0]);
+
+  score +=  lineCount === 1 ? 40 * (level + 1) : 
+            lineCount === 2 ? 100 * (level + 1) : 
+            lineCount === 3 ? 300 * (level + 1) : 
+            lineCount === 4 ? 1200 * (level + 1) : 0;
+  lineCount = 0;
  x = 5;
  y = 0;
  current.unshift(current.pop());
@@ -289,7 +288,7 @@ stillCounter = 0;
 drop  = false;
 }
 
-time += 0.1;
+time += 0.005;
   scr.innerHTML = "FULL LINES = <span id=\"lines\">" + (fullLines === -1 ? 0 : fullLines)
     + "</span><br>LEVEL = <span id=\"lvl\">" + level
     +"</span><br>SCORE = <span id=\"score\">" + score
@@ -297,7 +296,7 @@ time += 0.1;
 
 
 topCounter = (y === 0) ? topCounter+1 : 0;
-if(topCounter > 6) {
+if(topCounter > (90 - level*4 < 0 ? 10 : 90 - level*4)) {
 
 grid.innerHTML = "[]&nbsp&nbsp&nbsp&nbsp<br>GAME OVER<br>&nbsp&nbsp&nbsp&nbsp[]<br><br><br><br><br><span id=\"press\">Press space to replay</span></div>";
 frames = [];
