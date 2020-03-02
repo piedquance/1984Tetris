@@ -141,8 +141,8 @@ function collision(OGgrid, array, x, y, setting) {
 			if(array[y1][x2] === "[]") {
         if(OGgrid[y + y1 + 1][x + x2] === "[]" || OGgrid[y + y1 + 1][x + x2] === "==") {
           ok = false;
-          break;w
-        } x2++ }
+          break;
+        } continue; }
 		} 
   }
  break; 
